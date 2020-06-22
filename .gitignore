@@ -1,23 +1,81 @@
-# Compiled class file
-*.class
+/TODO.md
 
-# Log file
+# git file
+.git*
+!.gitignore
+
+# package file
+*.zip
+*.gz
+*.bz2
+*.rar
+*.tar
+*.xz
+
+# temp file
 *.log
+*.out
+*.cache
+*.diff
+*.patch
+*.tmp
 
-# BlueJ files
-*.ctxt
+# Office
+~'$'*.doc
+~'$'*.docx
+~'$'*.ppt
+~'$'*.pptx 
+~'$'*.xls
+~'$'*.xlsx
 
+# ---> VisualStudioCode
+.settings
+.vscode*
+
+# ---> Linux
+*~
+*.o
+*.so
+.Trash-*
+
+# system ignore
+.DS_Store
+.DS_Store?
+ehthumbs.db
+Thumbs.db
+*.dll
+*.exe
+
+# IntelliJ project files
+.idea
+*.iml
+out
+gen
+/src/
+
+# Gradle
+settings.gradle
+.gradle
+gradle
+gradlew
+gradlew.bat
+build/
+# Ignore Gradle GUI config
+gradle-app.setting
+# Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
+#!gradle-wrapper.jar
+# Cache of project
+.gradletasknamecache
+
+# ---> Java
+*.class
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
-
 # Package Files #
 *.jar
 *.war
-*.nar
 *.ear
-*.zip
-*.tar.gz
-*.rar
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+
