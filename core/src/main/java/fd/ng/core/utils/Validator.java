@@ -1,16 +1,23 @@
 package fd.ng.core.utils;
 
+import fd.ng.core.exception.BusinessProcessException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.util.Collection;
 import java.util.Map;
 
 public class Validator {
+	private static final Logger logger = LogManager.getLogger(Validator.class.getName());
+
 	public Validator() {
 		throw new AssertionError("No Validator instances for you!");
 	}
 
 	public static CharSequence notBlank(final CharSequence cs, String message) {
 		if (StringUtil.isBlank(cs)) {
-			throw new IllegalArgumentException(message);
+			logger.error(message);
+			throw new BusinessProcessException(message);
 		}
 		return cs;
 	}
@@ -25,8 +32,10 @@ public class Validator {
 	}
 
 	public static <T> T notNull(T object, String message) {
-		if (object == null)
-			throw new IllegalArgumentException(message);
+		if (object == null) {
+			logger.error(message);
+			throw new BusinessProcessException(message);
+		}
 		return object;
 	}
 
@@ -35,8 +44,10 @@ public class Validator {
 	}
 
 	public static <E> Collection<E> notEmpty(Collection<E> c, String message) {
-		if (c == null || c.isEmpty())
-			throw new IllegalArgumentException(message);
+		if (c == null || c.isEmpty()) {
+			logger.error(message);
+			throw new BusinessProcessException(message);
+		}
 		return c;
 	}
 
@@ -45,8 +56,10 @@ public class Validator {
 	}
 
 	public static <K, V> Map<K, V> notEmpty(Map<K, V> object, String message) {
-		if (object == null || object.size() < 1)
-			throw new IllegalArgumentException(message);
+		if (object == null || object.size() < 1) {
+			logger.error(message);
+			throw new BusinessProcessException(message);
+		}
 		return object;
 	}
 
@@ -55,8 +68,10 @@ public class Validator {
 	}
 
 	public static String notEmpty(String object, String message) {
-		if (object == null || object.length() == 0)
-			throw new IllegalArgumentException(message);
+		if (object == null || object.length() == 0) {
+			logger.error(message);
+			throw new BusinessProcessException(message);
+		}
 		return object;
 	}
 
@@ -65,8 +80,10 @@ public class Validator {
 	}
 
 	public static boolean isTrue(boolean expression, String message) {
-		if (!expression)
-			throw new IllegalArgumentException(message);
+		if (!expression) {
+			logger.error(message);
+			throw new BusinessProcessException(message);
+		}
 		return expression;
 	}
 
@@ -75,8 +92,10 @@ public class Validator {
 	}
 
 	public static boolean isFalse(boolean expression, String message) {
-		if (expression)
-			throw new IllegalArgumentException(message);
+		if (expression) {
+			logger.error(message);
+			throw new BusinessProcessException(message);
+		}
 		return expression;
 	}
 
@@ -89,8 +108,10 @@ public class Validator {
 				+ "(1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|\\d)\\."
 				+ "(1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|\\d)\\."
 				+ "(1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|\\d)$";
-		if (!ipAddr.matches(reg))
-			throw new IllegalArgumentException(message);
+		if (!ipAddr.matches(reg)) {
+			logger.error(message);
+			throw new BusinessProcessException(message);
+		}
 		return ipAddr;
 	}
 
@@ -99,7 +120,9 @@ public class Validator {
 	}
 
 	public static void isPort(final int port, String message) {
-		if (port < 0 || port > 65535)
-			throw new IllegalArgumentException(message);
+		if (port < 0 || port > 65535) {
+			logger.error(message);
+			throw new BusinessProcessException(message);
+		}
 	}
 }

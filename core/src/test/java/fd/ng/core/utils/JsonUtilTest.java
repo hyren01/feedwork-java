@@ -9,7 +9,6 @@ import fd.ng.test.junit.FdBaseTestCase;
 import fd.ng.test.junit.TestCaseLog;
 import org.junit.Ignore;
 import org.junit.Test;
-import sun.rmi.runtime.Log;
 
 import java.io.IOException;
 import java.io.StringReader;

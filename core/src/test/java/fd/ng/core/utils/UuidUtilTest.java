@@ -1,5 +1,6 @@
 package fd.ng.core.utils;
 
+import fd.ng.core.utils.key.SnowflakeImpl;
 import fd.ng.test.junit.TestCaseLog;
 import org.hamcrest.Matchers;
 import org.junit.Ignore;
@@ -9,8 +10,40 @@ import java.util.UUID;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.lessThan;
 
 public class UuidUtilTest {
+
+	@Test
+	public void guid() {
+		// 预热
+		long guid_perf = UuidUtil.guidUsedDefaultSnowflake();
+		guid_perf = UuidUtil.guidUsedDefaultSnowflake();
+
+		// test perf
+		long start = System.currentTimeMillis();
+		for(int i=0; i<10_000; i++) {
+			long cur_guid = UuidUtil.guidUsedDefaultSnowflake();
+			if(cur_guid<guid_perf) throw new RuntimeException(cur_guid + " must be less " + guid_perf);
+		}
+		long end = System.currentTimeMillis();
+		// 5毫秒内生成1万个ID
+		assertThat((end-start), lessThan(5L));
+
+		// test correct
+		for(int i=0; i<10_000; i++) {
+			long guid = UuidUtil.guidUsedDefaultSnowflake();
+
+			String guidStr = Long.toBinaryString(guid);
+			assertThat(guidStr.length(), is(60));
+
+			String didStr = guidStr.substring(38, 43);
+			assertThat(didStr, is(Long.toBinaryString(SnowflakeImpl.MAX_DATACENTER_NUM)));
+
+			String midStr = guidStr.substring(43, 48);
+			assertThat(midStr, is(Long.toBinaryString(SnowflakeImpl.MAX_MACHINE_NUM)));
+		}
+	}
 
 	@Test
 	public void threadId_Millis() {

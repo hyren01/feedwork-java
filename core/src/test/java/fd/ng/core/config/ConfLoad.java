@@ -6,5 +6,6 @@ public class ConfLoad {
 	public static void main(String[] args) {
 		System.out.println("base package : " + AppinfoConf.AppBasePackage);
 		System.out.println("properties : " + AppinfoConf.PropertiesMap);
+
 	}
 }
