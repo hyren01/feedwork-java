@@ -150,6 +150,9 @@ public class HttpClient {
 					continue;
 				}
 				Object invoke = method.invoke(bean);// 调用getter方法获取属性值
+				if(invoke == null){
+					continue;
+				}
 				if (propAnno != null) {
 					String alias = propAnno.alias();
 					if (StringUtil.isNotEmpty(alias))nameField = alias;
