@@ -21,71 +21,106 @@ public class FileUtilTest extends FdBaseTestCase {
 		boolean ok = FileUtil.createOrReplaceFile(curDir + "/d0.txt", "d0.file");
 		assertThat(ok, is(true));
 
-		curDir = testDeleteDir_RootDir+"/d11";
+		curDir = testDeleteDir_RootDir + "/d11";
 		Files.createDirectories(Paths.get(curDir));
-		ok = FileUtil.createOrReplaceFile(curDir+"/d11.txt", "d11.file");
+		ok = FileUtil.createOrReplaceFile(curDir + "/d11.txt", "d11.file");
 		assertThat(ok, is(true));
-		curDir = testDeleteDir_RootDir+"/d12";
+		curDir = testDeleteDir_RootDir + "/d12";
 		Files.createDirectories(Paths.get(curDir));
-		ok = FileUtil.createOrReplaceFile(curDir+"/d12.txt", "d12.file");
+		ok = FileUtil.createOrReplaceFile(curDir + "/d12.txt", "d12.file");
 		assertThat(ok, is(true));
 
-		curDir = testDeleteDir_RootDir+"/d11/d11_1";
+		curDir = testDeleteDir_RootDir + "/d11/d11_1";
 		Files.createDirectories(Paths.get(curDir));
-		ok = FileUtil.createOrReplaceFile(curDir+"/d11_1.txt", "d11_1.file");
+		ok = FileUtil.createOrReplaceFile(curDir + "/d11_1.txt", "d11_1.file");
 		assertThat(ok, is(true));
 
 		ok = FileUtil.deleteDirectoryFiles(testDeleteDir_RootDir);
 		assertThat(ok, is(true));
-		assertThat(Files.isDirectory(Paths.get(testDeleteDir_RootDir+"/d11/d11_1")), is(true));
-		assertThat(Files.exists(Paths.get(testDeleteDir_RootDir+"/d11/d11_1/d11_1.txt")), is(false));
-		assertThat(Files.exists(Paths.get(testDeleteDir_RootDir+"/d11/d11.txt")), is(false));
-		assertThat(Files.isDirectory(Paths.get(testDeleteDir_RootDir+"/d12")), is(true));
-		assertThat(Files.exists(Paths.get(testDeleteDir_RootDir+"/d12/d12.txt")), is(false));
-		assertThat(Files.exists(Paths.get(testDeleteDir_RootDir+"/d0.txt")), is(false));
+		assertThat(Files.isDirectory(Paths.get(testDeleteDir_RootDir + "/d11/d11_1")), is(true));
+		assertThat(Files.exists(Paths.get(testDeleteDir_RootDir + "/d11/d11_1/d11_1.txt")), is(false));
+		assertThat(Files.exists(Paths.get(testDeleteDir_RootDir + "/d11/d11.txt")), is(false));
+		assertThat(Files.isDirectory(Paths.get(testDeleteDir_RootDir + "/d12")), is(true));
+		assertThat(Files.exists(Paths.get(testDeleteDir_RootDir + "/d12/d12.txt")), is(false));
+		assertThat(Files.exists(Paths.get(testDeleteDir_RootDir + "/d0.txt")), is(false));
 
 		FileUtil.deleteDirectory(new File(testDeleteDir_RootDir));
 		assertThat(Files.isDirectory(Paths.get(testDeleteDir_RootDir)), is(false));
 	}
 
 	@Test
-	public void fileSizeConversion(){
+	public void moveFile() throws IOException {
+		String testDeleteDir_RootDir = "/tmp/xxx/deleteTest/" + "xxx";
+		if (!new File(testDeleteDir_RootDir).exists()) {
+			Files.createDirectories(Paths.get(testDeleteDir_RootDir));
+		}
+		boolean ok = FileUtil.createOrReplaceFile(testDeleteDir_RootDir + "/d0.txt", "d0.file");
+		assertThat(ok, is(true));
+		String testDeleteDir_RootDir2 = "/tmp/xxx/deleteTest/" + "xxx2";
+		if (!new File(testDeleteDir_RootDir2).exists()) {
+			Files.createDirectories(Paths.get(testDeleteDir_RootDir2));
+		}
+		FileUtil.moveFile(new File(testDeleteDir_RootDir + "/d0.txt"),
+				new File(testDeleteDir_RootDir2 + "d2.txt"));
+	}
+
+	@Test
+	public void copyFile() throws IOException {
+		String testDeleteDir_RootDir = "/tmp/xxx/deleteTest/" + "xxx";
+		if (!new File(testDeleteDir_RootDir).exists()) {
+			Files.createDirectories(Paths.get(testDeleteDir_RootDir));
+		}
+		boolean ok = FileUtil.createOrReplaceFile(testDeleteDir_RootDir + "/d0.txt", "d0.file");
+		assertThat(ok, is(true));
+		String testDeleteDir_RootDir2 = "/tmp/xxx/deleteTest/" + "xxx2";
+		if (!new File(testDeleteDir_RootDir2).exists()) {
+			Files.createDirectories(Paths.get(testDeleteDir_RootDir2));
+		}
+		FileUtil.copyFile(new File(testDeleteDir_RootDir + "/d0.txt"),
+				new File(testDeleteDir_RootDir2 + "d2.txt"), true);
+		String testDeleteDir_RootDir3 = "/tmp/xxx/deleteTest/" + "xxx3";
+		FileUtil.copyFile(new File(testDeleteDir_RootDir + "/d0.txt"),
+				new File(testDeleteDir_RootDir3 + "d2.txt"), true);
+	}
+
+	@Test
+	public void fileSizeConversion() {
 
 		assertThat(FileUtil.fileSizeConversion(FileUtil.ONE_KB), is("1 KB"));
-		assertThat(FileUtil.fileSizeConversion(FileUtil.ONE_KB+1), is("1 KB"));
-		assertThat(FileUtil.fileSizeConversion(FileUtil.ONE_KB+FileUtil.ONE_KB/4), is("1.2 KB"));
-		assertThat(FileUtil.fileSizeConversion(FileUtil.ONE_KB+FileUtil.ONE_KB/2), is("1.5 KB"));
-		assertThat(FileUtil.fileSizeConversion(FileUtil.ONE_KB*2-1), is("2 KB"));
-		assertThat(FileUtil.fileSizeConversion(FileUtil.ONE_KB*2), is("2 KB"));
-		assertThat(FileUtil.fileSizeConversion(FileUtil.ONE_KB*2+1), is("2 KB"));
-		assertThat(FileUtil.fileSizeConversion(FileUtil.ONE_KB*3), is("3 KB"));
+		assertThat(FileUtil.fileSizeConversion(FileUtil.ONE_KB + 1), is("1 KB"));
+		assertThat(FileUtil.fileSizeConversion(FileUtil.ONE_KB + FileUtil.ONE_KB / 4), is("1.2 KB"));
+		assertThat(FileUtil.fileSizeConversion(FileUtil.ONE_KB + FileUtil.ONE_KB / 2), is("1.5 KB"));
+		assertThat(FileUtil.fileSizeConversion(FileUtil.ONE_KB * 2 - 1), is("2 KB"));
+		assertThat(FileUtil.fileSizeConversion(FileUtil.ONE_KB * 2), is("2 KB"));
+		assertThat(FileUtil.fileSizeConversion(FileUtil.ONE_KB * 2 + 1), is("2 KB"));
+		assertThat(FileUtil.fileSizeConversion(FileUtil.ONE_KB * 3), is("3 KB"));
 
 		assertThat(FileUtil.fileSizeConversion(FileUtil.ONE_MB), is("1 MB"));
-		assertThat(FileUtil.fileSizeConversion(FileUtil.ONE_MB+1), is("1 MB"));
-		assertThat(FileUtil.fileSizeConversion(FileUtil.ONE_MB+FileUtil.ONE_MB/2-1), is("1.5 MB"));
-		assertThat(FileUtil.fileSizeConversion(FileUtil.ONE_MB+FileUtil.ONE_MB/3), is("1.3 MB"));
-		assertThat(FileUtil.fileSizeConversion(FileUtil.ONE_MB*2-1), is("2 MB"));
-		assertThat(FileUtil.fileSizeConversion(FileUtil.ONE_MB*2), is("2 MB"));
-		assertThat(FileUtil.fileSizeConversion(FileUtil.ONE_MB*2+1), is("2 MB"));
-		assertThat(FileUtil.fileSizeConversion(FileUtil.ONE_MB*3), is("3 MB"));
+		assertThat(FileUtil.fileSizeConversion(FileUtil.ONE_MB + 1), is("1 MB"));
+		assertThat(FileUtil.fileSizeConversion(FileUtil.ONE_MB + FileUtil.ONE_MB / 2 - 1), is("1.5 MB"));
+		assertThat(FileUtil.fileSizeConversion(FileUtil.ONE_MB + FileUtil.ONE_MB / 3), is("1.3 MB"));
+		assertThat(FileUtil.fileSizeConversion(FileUtil.ONE_MB * 2 - 1), is("2 MB"));
+		assertThat(FileUtil.fileSizeConversion(FileUtil.ONE_MB * 2), is("2 MB"));
+		assertThat(FileUtil.fileSizeConversion(FileUtil.ONE_MB * 2 + 1), is("2 MB"));
+		assertThat(FileUtil.fileSizeConversion(FileUtil.ONE_MB * 3), is("3 MB"));
 
 		assertThat(FileUtil.fileSizeConversion(FileUtil.ONE_GB), is("1 GB"));
-		assertThat(FileUtil.fileSizeConversion(FileUtil.ONE_GB+1), is("1 GB"));
-		assertThat(FileUtil.fileSizeConversion(FileUtil.ONE_GB+FileUtil.ONE_GB/2+1), is("1.5 GB"));
-		assertThat(FileUtil.fileSizeConversion(FileUtil.ONE_GB+FileUtil.ONE_GB/3), is("1.3 GB"));
-		assertThat(FileUtil.fileSizeConversion(FileUtil.ONE_GB*2-1), is("2 GB"));
-		assertThat(FileUtil.fileSizeConversion(FileUtil.ONE_GB*2), is("2 GB"));
-		assertThat(FileUtil.fileSizeConversion(FileUtil.ONE_GB*2+1), is("2 GB"));
-		assertThat(FileUtil.fileSizeConversion(FileUtil.ONE_GB*3), is("3 GB"));
+		assertThat(FileUtil.fileSizeConversion(FileUtil.ONE_GB + 1), is("1 GB"));
+		assertThat(FileUtil.fileSizeConversion(FileUtil.ONE_GB + FileUtil.ONE_GB / 2 + 1), is("1.5 GB"));
+		assertThat(FileUtil.fileSizeConversion(FileUtil.ONE_GB + FileUtil.ONE_GB / 3), is("1.3 GB"));
+		assertThat(FileUtil.fileSizeConversion(FileUtil.ONE_GB * 2 - 1), is("2 GB"));
+		assertThat(FileUtil.fileSizeConversion(FileUtil.ONE_GB * 2), is("2 GB"));
+		assertThat(FileUtil.fileSizeConversion(FileUtil.ONE_GB * 2 + 1), is("2 GB"));
+		assertThat(FileUtil.fileSizeConversion(FileUtil.ONE_GB * 3), is("3 GB"));
 
 		assertThat(FileUtil.fileSizeConversion(FileUtil.ONE_TB), is("1 TB"));
-		assertThat(FileUtil.fileSizeConversion(FileUtil.ONE_TB+1), is("1 TB"));
-		assertThat(FileUtil.fileSizeConversion(FileUtil.ONE_TB+FileUtil.ONE_TB/4), is("1.2 TB"));
-		assertThat(FileUtil.fileSizeConversion(FileUtil.ONE_TB+FileUtil.ONE_TB/2), is("1.5 TB"));
-		assertThat(FileUtil.fileSizeConversion(FileUtil.ONE_TB*2-1), is("2 TB"));
-		assertThat(FileUtil.fileSizeConversion(FileUtil.ONE_TB*2), is("2 TB"));
-		assertThat(FileUtil.fileSizeConversion(FileUtil.ONE_TB*2+1), is("2 TB"));
-		assertThat(FileUtil.fileSizeConversion(FileUtil.ONE_TB*3), is("3 TB"));
+		assertThat(FileUtil.fileSizeConversion(FileUtil.ONE_TB + 1), is("1 TB"));
+		assertThat(FileUtil.fileSizeConversion(FileUtil.ONE_TB + FileUtil.ONE_TB / 4), is("1.2 TB"));
+		assertThat(FileUtil.fileSizeConversion(FileUtil.ONE_TB + FileUtil.ONE_TB / 2), is("1.5 TB"));
+		assertThat(FileUtil.fileSizeConversion(FileUtil.ONE_TB * 2 - 1), is("2 TB"));
+		assertThat(FileUtil.fileSizeConversion(FileUtil.ONE_TB * 2), is("2 TB"));
+		assertThat(FileUtil.fileSizeConversion(FileUtil.ONE_TB * 2 + 1), is("2 TB"));
+		assertThat(FileUtil.fileSizeConversion(FileUtil.ONE_TB * 3), is("3 TB"));
 	}
 
 }

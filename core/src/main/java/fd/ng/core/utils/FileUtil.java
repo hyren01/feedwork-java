@@ -241,8 +241,8 @@ public class FileUtil {
 		Validator.notNull(srcFile, "Source must not be null");
 		Validator.notNull(destFile, "Destination must not be null");
 
-		Validator.isFalse(srcFile.exists(), "Source '" + srcFile + "' does not exist");
-		Validator.isTrue(srcFile.isDirectory(), "Source '" + srcFile + "' must not be directory");
+		Validator.isTrue(srcFile.exists(), "Source '" + srcFile + "' does not exist");
+		Validator.isFalse(srcFile.isDirectory(), "Source '" + srcFile + "' must not be directory");
 
 		if (srcFile.getCanonicalPath().equals(destFile.getCanonicalPath())) {
 			throw new IOException("Source '" + srcFile + "' and destination '" + destFile + "' are the same");
@@ -270,7 +270,7 @@ public class FileUtil {
 	 * @throws IllegalArgumentException "Negative size" 如果文件被截断，导致其大小小于拷贝偏移
 	 */
 	private static void doCopyFile(final File srcFile, final File destFile, final boolean preserveFileDate) throws IOException {
-		Validator.isTrue((destFile.exists() && destFile.isDirectory()), "Destination '" + destFile + "' exists but is a directory");
+		Validator.isFalse((destFile.exists() && destFile.isDirectory()), "Destination '" + destFile + "' exists but is a directory");
 
 		try (FileInputStream fis = new FileInputStream(srcFile);
 		     FileChannel input = fis.getChannel();
@@ -313,10 +313,10 @@ public class FileUtil {
 		Validator.notNull(srcFile, "Source must not be null");
 		Validator.notNull(destFile, "Destination must not be null");
 
-		Validator.isFalse(srcFile.exists(), "Source '" + srcFile + "' does not exist");
-		Validator.isTrue(srcFile.isDirectory(), "Source '" + srcFile + "' is not a directory");
+		Validator.isTrue(srcFile.exists(), "Source '" + srcFile + "' does not exist");
+		Validator.isFalse(srcFile.isDirectory(), "Source '" + srcFile + "' is not a directory");
 
-		Validator.isTrue(destFile.exists(), "Destination '" + destFile + "' already exists");
+		Validator.isFalse(destFile.exists(), "Destination '" + destFile + "' already exists");
 
 		final boolean rename = srcFile.renameTo(destFile);
 		if (!rename) {
